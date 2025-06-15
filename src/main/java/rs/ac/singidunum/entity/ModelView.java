@@ -3,14 +3,12 @@ package rs.ac.singidunum.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Table(name = "model")
+@Table(name = "vw_model")
 @NoArgsConstructor
 @Getter
-@Setter
-public class Model {
+public class ModelView {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,13 +19,13 @@ public class Model {
     private String modelName;
 
     @Column(nullable = false)
-    private String manufacturer;
+    private String manufact;
 
     @Column(nullable = false)
-    private String modelType;
+    private String type;
 
     @Column(nullable = false)
-    private String modelScale;
+    private String scale;
 
     @Column(nullable = false)
     private Integer modelPrice;

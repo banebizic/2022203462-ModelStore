@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.singidunum.entity.Model;
+import rs.ac.singidunum.entity.ModelView;
 import rs.ac.singidunum.service.ModelService;
 
 import java.util.List;
@@ -17,9 +18,14 @@ public class ModelController {
 
     private final ModelService service;
 
-    @GetMapping
-    public List<Model> getModels(){
+    @GetMapping("/view")
+    public List<ModelView> getModels(){
         return service.getModels();
+    }
+
+    @GetMapping(path = "/view/{id}")
+    public ResponseEntity<ModelView> getModelViewById(@PathVariable Integer id) {
+        return ResponseEntity.of(service.getModelViewById(id));
     }
 
     @GetMapping(path = "/{id}")

@@ -55,6 +55,8 @@
                 </div>
             </div>
         </nav>
+        <h3>Spisak maketa</h3>
+        <a href="/new/model.html" class="btn btn-sm btn-primary">+ Dodaj maketu</a>
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
@@ -76,6 +78,9 @@
                     <th scope="col">
                         <i class="fa-solid fa-money-bill-1"></i> Cena
                     </th>
+                    <th scope="col">
+                        <i class="fa-solid fa-circle-info"></i> Opcije
+                    </th>
                 </tr>
             </thead>
             <tbody id="table"></tbody>
@@ -84,13 +89,17 @@
     <template id="template">
         <tr>
             <th class="id" role="row"></th>
-            <td>
-                <a class="name"></a>
-            </td>
+            <td class="name"></td>
             <td class="manufacturer"></td>
             <td class="type"></td>
             <td class="scale"></td>
             <td class="modelPrice"></td>
+            <td>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-sm btn-success edit" title="Izmeni"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <button type="button" class="btn btn-sm btn-danger remove" title="Obriši"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </td>
         </tr>
     </template>
 
@@ -103,7 +112,7 @@
         const table = document.getElementById('table')
         const template = document.getElementById('template')
 
-        axios.get('/api/model')
+        axios.get('/api/model/view')
             .then(rsp => {
                 rsp.data.forEach(model => {
                     const copy = template.content.cloneNode(true)
@@ -118,6 +127,14 @@
                     copy.querySelector('.type').innerText = model.type
                     copy.querySelector('.scale').innerText = model.scale
                     copy.querySelector('.modelPrice').innerText = model.modelPrice
+                    copy.querySelector('.edit').href = "/edit/model.html?id=" + model.id
+                    copy.querySelector('.remove').addEventListener('click', () => {
+                        if (!confirm(`Da li sigurno zelite da obrisete ${model.modelName}?`)) return
+                        axios.request({
+                            url: `/api/model/${model.id}`,
+                            method: 'delete'
+                        }).then(rsp => window.location.reload())
+                    })
                     table.appendChild(copy)
                 })
             })
